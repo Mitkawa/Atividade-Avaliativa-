@@ -30,7 +30,7 @@ namespace IngressoMVC.Controllers
                 .FirstOrDefault(ator => ator.Id == id);
 
             if (resultado == null)
-                return View();
+                return View("NotFound");
 
             GetAtorDto atorDTO = new GetAtorDto()
             {
@@ -64,12 +64,12 @@ namespace IngressoMVC.Controllers
         public IActionResult Atualizar(int? id)
         {
             if (id == null)
-                return NotFound();
+                return View("NotFound");
 
             var result = _context.Atores.FirstOrDefault(a => a.Id == id);
 
             if (result == null)
-                return View();
+                return View("NotFound");
 
             return View(result);
         }
@@ -94,7 +94,7 @@ namespace IngressoMVC.Controllers
         {
             var result = _context.Atores.FirstOrDefault(a => a.Id == id);
 
-            if (result == null) return View();
+            if (result == null) return View("NotFound");
 
             return View(result);
         }

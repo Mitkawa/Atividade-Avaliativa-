@@ -33,11 +33,11 @@ namespace IngressoMVC.Controllers
 
         public IActionResult Atualizar(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null) return View("NotFound");
 
             var result = _context.Categorias.FirstOrDefault(a => a.Id == id);
 
-            if (result == null) return View();          
+            if (result == null) return View("NotFound");          
             
             return View(result);
         }
@@ -59,7 +59,7 @@ namespace IngressoMVC.Controllers
         public IActionResult Deletar(int id)
         {
             var result = _context.Categorias.FirstOrDefault(a => a.Id == id);
-            if (result == null) return View();
+            if (result == null) return View("NotFound");
             return View(result);
         }
 

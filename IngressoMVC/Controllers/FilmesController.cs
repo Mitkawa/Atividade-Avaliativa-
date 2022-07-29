@@ -22,7 +22,7 @@ namespace IngressoMVC.Controllers
         public IActionResult Criar() => View();
 
         [HttpPost]
-        IActionResult Criar(PostFilmeDTO filmeDto)
+        public IActionResult Criar(PostFilmeDTO filmeDto)
         {
             Filme filme = new Filme
                 (
@@ -31,15 +31,17 @@ namespace IngressoMVC.Controllers
                     filmeDto.Preco,
                     filmeDto.ImageURL,
                     _context.Produtores
-                        .FirstOrDefault(x => x.Id == filmeDto.ProdutorId).Id
+                        .FirstOrDefault(x => x.Id == filmeDto.ProdutorId).Id,
+                    _context.Cinemas
+                        .FirstOrDefault(c => c.Id == filmeDto.CinemaId).Id
                 );
 
             _context.Add(filme);
             _context.SaveChanges();
 
-            foreach (var categoria in filmeDto.Categorias)
+            foreach (var categoria in filmeDto.CategoriasId)
             {
-                int? categoriaId = _context.Categorias.Where(c => c.Nome == categoria).FirstOrDefault().Id;
+                int? categoriaId = _context.Categorias.Where(c => c.Id == categoria).FirstOrDefault().Id;
 
                 if (categoriaId != null)
                 {
@@ -59,8 +61,10 @@ namespace IngressoMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Atualizar(int id)
+        public IActionResult Atualizar(int? id)
         {
+            if (id == null) return View("NotFound");
+
             var result = _context.Filmes.FirstOrDefault(x => x.Id == id);
 
             if (result == null)

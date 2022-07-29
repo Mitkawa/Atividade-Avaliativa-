@@ -50,8 +50,10 @@ namespace IngressoMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Atualizar(int id)
+        public IActionResult Atualizar(int? id)
         {
+            if (id == null) return View("NotFound");
+
             var result = _context.Cinemas.FirstOrDefault(cinema => cinema.Id == id);
 
             if (result == null)
